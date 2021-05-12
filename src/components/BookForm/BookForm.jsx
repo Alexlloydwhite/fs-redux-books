@@ -1,31 +1,23 @@
-import axios from 'axios';
-import {useState} from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-function BookForm({ fetchBookList }) {
+function BookForm() {
+
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = event => {
     event.preventDefault();
 
     console.log(`Adding book`, {title, author});
 
+    dispatch({ type: 'POST_BOOK', payload: { title, author }}); 
+    // {title: title, author: author}
+    // if your key values var is the same, you can skip.
 
-    // TODO - axios request to server to add book
-    axios.post('/books', {
-      title: title, author: author 
-    })
-      .then( response => {
-        console.log('added books');
-        if (title !== '' && author !== ''){
-          fetchBookList();
-          setTitle('');
-          setAuthor('');
-        }
-      })
-      .catch( error => {
-        console.log('error adding book');
-      })
+    setTitle('');
+    setAuthor('');
   };
 
   return (
